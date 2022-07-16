@@ -1,0 +1,48 @@
+.goods-image {
+	width: 480px;
+	height: 400px;
+	display: flex;
+	position: relative;
+	.large {
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		z-index: 999;
+		background-color: pink;
+		left: 412px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		background-position: -400px -400px;
+		background-size: 800px 800px;
+		background-repeat: no-repeat;
+		background-color: #f8f8f8;
+	}
+	.middle {
+		position: relative;
+		width: 400px;
+		height: 400px;
+		background: #f5f5f5;
+		cursor: move;
+		.layer {
+			position: absolute;
+			left: 0px;
+			top: 200px;
+			width: 200px;
+			height: 200px;
+			background: rgba(0, 0, 0, 0.2);
+		}
+	}
+	.small {
+		width: 80px;
+		li {
+			width: 68px;
+			height: 68px;
+			background-color: black;
+			margin: 0px 0px 15px 12px;
+			cursor: pointer;
+			&:hover,
+			&.active {
+				border: 2px solid $xtxColor;
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+@import 'config';
+
+.remMixin() {
+  @functions: ~`(function() {
+    var clientWidth = '375px';
+    function convert(size) {
+      return typeof size === 'string' ? 
+        +size.replace('px', '') : size;
+    }
+    this.rem = function(size) {
+      return convert(size) / convert(clientWidth) * 10 + 'rem';
+    }                                                                                   
+  })()`;
+  }
+   
+  .remMixin();

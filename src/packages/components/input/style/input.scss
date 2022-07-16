@@ -1,0 +1,10 @@
+.dl-input {
+	width: 100%;
+	display: inline-flex;
+	position: relative;
+	font-size: 14px;
+	.dl-input-group__prepend {
+		position: relative;
+		display: inline-flex;
+	}
+}

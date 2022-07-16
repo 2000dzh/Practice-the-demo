@@ -1,4 +1,4 @@
-# scss-vue3
+# erabbit-pc-vue3-project-ts
 
 ## Project setup
 ```

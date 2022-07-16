@@ -1,0 +1,54 @@
+.xtx-pagination {
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+	.pagination-slect {
+		margin: 0 16px 0 0;
+	}
+	.pagination__total {
+		display: flex;
+		align-items: center;
+	}
+	.pagination-pagers {
+		display: flex;
+		align-items: center;
+		> li {
+			width: 32px;
+			height: 32px;
+      color: #303133;
+      font-size: 14px;
+			line-height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+			padding: 0 4px;
+			text-align: center;
+			cursor: pointer;
+			&:hover {
+				color: $xtxColor;
+			}
+			&.active {
+				color: #fff;
+				background-color: $xtxColor;
+			}
+			&.disabled {
+				cursor: not-allowed;
+				opacity: 0.4;
+				&:hover {
+					color: #333;
+				}
+			}
+      &.dl-icon {
+        svg {
+          width: 1em;
+          height: 1em;
+          pointer-events: none;
+        }
+      }
+		}
+	}
+	> span {
+		margin-right: 10px;
+		cursor: pointer;
+	}
+}
