@@ -1,49 +1,111 @@
 <!--
  * @Author: 丁子豪
  * @Date: 2022-07-15 22:24:42
- * @LastEditTime: 2022-07-15 22:28:48
+ * @LastEditTime: 2022-07-19 21:23:14
  * @LastEditors: 丁子豪
 -->
 <template>
-  <el-sub-menu index="1">
-    <template #title>
-      <el-icon><location /></el-icon>
-      <span>Navigator One</span>
+  <div class="sidebar-item" v-if="route && !route.hidden">
+    <!-- 当只有一个路由显示 -->
+    <template
+      v-if="
+        hasOneShowingChild(route.children, route) &&
+        (onlyOneChil.noShowingChildren || !onlyOneChil.children)
+      "
+    >
+      <router-link v-if="onlyOneChil.meta" :to="resolvePath(onlyOneChil.path)">
+        <el-menu-item :index="onlyOneChil.path">
+          <el-icon><location /></el-icon>
+          <span>
+            {{ onlyOneChil.meta.title }}
+          </span>
+        </el-menu-item>
+      </router-link>
     </template>
-    <el-menu-item-group>
-      <template #title><span>Group One</span></template>
-      <el-menu-item index="1-1">item one</el-menu-item>
-      <el-menu-item index="1-2">item two</el-menu-item>
-    </el-menu-item-group>
-    <el-menu-item-group title="Group Two">
-      <el-menu-item index="1-3">item three</el-menu-item>
-    </el-menu-item-group>
-    <el-sub-menu index="1-4">
-      <template #title><span>item four</span></template>
-      <el-menu-item index="1-4-1">item one</el-menu-item>
+
+    <el-sub-menu v-else :index="route.path" ref="subMenu">
+      <template #title>
+        <el-icon><location /></el-icon>
+        <span>{{ route.meta.title }}</span>
+      </template>
+      <!-- 递归组件 -->
+      <SidebarItem
+        v-for="child in route.children"
+        :key="child.path"
+        :route="child"
+      />
     </el-sub-menu>
-  </el-sub-menu>
-  <el-menu-item index="2">
-    <el-icon><icon-menu /></el-icon>
-    <template #title>Navigator Two</template>
-  </el-menu-item>
-  <el-menu-item index="3" disabled>
-    <el-icon><document /></el-icon>
-    <template #title>Navigator Three</template>
-  </el-menu-item>
-  <el-menu-item index="4">
-    <el-icon><setting /></el-icon>
-    <template #title>Navigator Four</template>
-  </el-menu-item>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from "vue";
+import type { PropType } from "vue";
+import { RouteRecordRaw } from "vue-router";
 import {
   Document,
   Menu as IconMenu,
   Location,
   Setting,
 } from "@element-plus/icons-vue";
+import { baseParse } from "@vue/compiler-dom";
+
+defineOptions({
+  name: "SidebarItem",
+});
+
+const props = defineProps({
+  route: {
+    type: Object as PropType<any>,
+    requried: true,
+  },
+});
+
+interface ROUTE {
+  hidden?: boolean;
+  path: string;
+  children?: ROUTE[];
+  meta: Object;
+}
+let onlyOneChil = ref<any>({});
+const hasOneShowingChild = (children: ROUTE[] = [], parent: ROUTE) => {
+  const showingChildren = children.filter((item) => {
+    if (item.hidden) {
+      return false;
+    } else {
+      onlyOneChil.value = item;
+      return true;
+    }
+  });
+
+  if (showingChildren.length === 0) {
+    onlyOneChil.value = {
+      ...parent,
+      noShowingChildren: true,
+    };
+    return true;
+  }
+
+  if (showingChildren.length === 1) {
+    return false;
+  }
+  return false;
+};
+
+const resolvePath = (routePath: string) => {
+  console.log(routePath)
+  return routePath
+};
+
+const fn = (item: any) => {
+  console.log(item);
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sidebar-item {
+  :deep() .is-active > .el-sub-menu__title {
+    color: $subMenuActiveText !important;
+  }
+}
+</style>

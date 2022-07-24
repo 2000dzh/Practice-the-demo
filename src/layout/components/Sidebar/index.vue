@@ -1,7 +1,7 @@
 <!--
  * @Author: 丁子豪
  * @Date: 2022-07-15 21:28:22
- * @LastEditTime: 2022-07-16 13:21:06
+ * @LastEditTime: 2022-07-19 21:27:29
  * @LastEditors: 丁子豪
 -->
 <template>
@@ -13,8 +13,15 @@
         :collapse="isCollapse"
         @open="handleOpen"
         @close="handleClose"
+        :background-color="variables.menuBg"
+        :text-color="variables.menuText"
+        :active-text-color="variables.menuActiveText"
       >
-        <SidebarItem />
+        <SidebarItem
+          v-for="route in realRoutingAddress"
+          :key="route.path"
+          :route="route"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -23,10 +30,68 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import SidebarItem from "./SidebarItem.vue";
-
+import variables from "@/assets/styles/variables.scss";
+import manageRouter from "@/router/modules/manage"; //管理系统
+import { RouteRecordRaw } from "vue-router";
 defineOptions({
   name: "Sidebar",
 });
+
+const permission_routes = ref<PERMISSION_ROUTES[]>([
+  {
+    path: "/13434434",
+    children: [
+      {
+        hidden: true,
+        path: "23435643",
+        meta: {},
+      },
+      {
+        path: "12121212234423",
+        meta: {},
+      },
+    ],
+  },
+  {
+    path: "/dzh",
+    children: [
+      {
+        path: "121",
+        meta: {},
+      },
+    ],
+  },
+  {
+    path: "/asdas",
+  },
+]);
+interface PERMISSION_ROUTES {
+  hidden?: boolean;
+  path: string;
+  children?: PERMISSION_ROUTES[];
+  meta?: any;
+}
+
+let str = "";
+let realRoutingAddress: Array<RouteRecordRaw> = JSON.parse(
+  JSON.stringify(manageRouter)
+);
+const routeLsit = (arr: Array<RouteRecordRaw>) => {
+  arr.forEach((route) => {
+    if (route.children?.length) {
+      route.children.map((item, index) => {
+        str = `${route.path}/${item.path}`;
+        item.path = str;
+        if (item.children?.length) {
+          route.children && routeLsit([route.children[index]]);
+        }
+      });
+    }
+    str = "";
+  });
+};
+routeLsit(realRoutingAddress);
+console.log(manageRouter);
 
 const isCollapse = ref(false);
 const handleOpen = (key: string, keyPath: string[]) => {

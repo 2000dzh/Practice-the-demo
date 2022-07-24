@@ -1,13 +1,18 @@
 <!--
  * @Author: 丁子豪
  * @Date: 2022-07-15 21:25:10
- * @LastEditTime: 2022-07-16 13:14:48
+ * @LastEditTime: 2022-07-17 19:16:50
  * @LastEditors: 丁子豪
 -->
 <template>
   <div class="app-wrapper">
     <Sidebar class="sidebar-container" />
-    <AppMain />
+    <div class="main-container">
+      <div class="fixed-header">
+        <NavBar />
+      </div>
+      <AppMain />
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,14 @@ defineOptions({
     bottom: 0px;
     background-color: #304156;
     overflow: hidden;
+    z-index: 111;
+  }
+  .main-container {
+    position: relative;
+    width: calc(100% - 210px);
+    height: 100%;
+    margin-left: 210px;
+    background-color: red;
   }
 }
 </style>
